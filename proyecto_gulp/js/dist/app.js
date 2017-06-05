@@ -1,0 +1,1 @@
+"use strict";var sumar=function(r,n){return r+n},restar=function(r,n){return r-n},elemets=function(r,n){return r+n},array=[1,2,3,4,5];console.log("a");
