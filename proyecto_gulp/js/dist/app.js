@@ -1,1 +1,1 @@
-"use strict";var sumar=function(r,n){return r+n},restar=function(r,n){return r-n},elemets=function(r,n){return r+n},array=[1,2,3,4,5];console.log("a");
+"use strict";var sumar=function(e,r){return e+r},restar=function(e,r){return e-r},elemets=function(){return console.log("Demo creada para el curso de Gulp")};elemets();

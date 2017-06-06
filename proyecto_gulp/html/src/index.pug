@@ -10,11 +10,21 @@ html(lang="es")
     meta(name="robots" content="")
 
     title Gulp
-    
-    link(rel="stylesheet" type="text/css" href="css/dist/styles.css")
+    // inject:css
+    // endinject
 
   body
     section(class="main_container")
       header
         h1 Titulo
         p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis est dolores commodi ullam tempora sequi asperiores ipsum autem ex aliquam. Voluptatibus unde, excepturi at perferendis incidunt ea eaque rerum autem?
+
+        nav(class="links")
+            ul
+                li: a(href="") Link 1
+                li: a(href="") Link 2
+                li: a(href="") Link 3
+                li: a(href="") Link 4
+
+    // inject:js
+    // endinject
