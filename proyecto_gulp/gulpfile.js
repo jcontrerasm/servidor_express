@@ -4,7 +4,7 @@ const gulp        = require('gulp'),
       concat      = require('gulp-concat'),
       uglify      = require('gulp-uglify'),
       stylus      = require('gulp-stylus'),
-      //browserSync = require('browser-sync').create(),
+      browserSync = require('browser-sync').create(),
       pug         = require('gulp-pug');
 
 // npm install --save-dev gulp-babel babel-preset-es2015
@@ -18,7 +18,6 @@ gulp.task('js' , function () {
     .pipe(concat('app.js'))
     .pipe(uglify())
     .pipe(gulp.dest('js/dist/'));
-  console.log('Compilacion de JS finalizada.');
 });
 
 // npm install --save-dev gulp-stylus
@@ -28,7 +27,6 @@ gulp.task('css', function () {
       compress: true
     }))
     .pipe(gulp.dest('./css/dist/'));
-  console.log('Compilacion de CSS finalizada.');
 });
 
 // npm install --save-dev gulp-pug
@@ -38,14 +36,17 @@ gulp.task('html', function () {
 
     }))
     .pipe(gulp.dest('html/dist'));
-  console.log('Compilacion de HTML finalizada.');
 });
 
 gulp.task('watch', function() {
-  gulp.watch('./js/src/*.js', ['js'])
-  gulp.watch('./css/src/*.styl', ['css'])
-  gulp.watch('./html/src/*.pug', ['html'])
-  console.log('Se estan observando los cambios en HTML,CSS Y JS.');
+
+  browserSync.init({
+    server: './html/dist/'
+  });
+
+  gulp.watch('./js/src/*.js', ['js']).on('change', browserSync.reload);
+  gulp.watch('./css/src/*.styl', ['css']).on('change', browserSync.reload);
+  gulp.watch('./html/src/*.pug', ['html']).on('change', browserSync.reload);
 });
 
 gulp.task('default', ['watch']);
