@@ -4,6 +4,7 @@ const gulp        = require('gulp'),
       concat      = require('gulp-concat'),
       uglify      = require('gulp-uglify'),
       stylus      = require('gulp-stylus'),
+      inject      = require('gulp-inject'),
       browserSync = require('browser-sync').create(),
       pug         = require('gulp-pug');
 
@@ -17,7 +18,8 @@ gulp.task('js' , function () {
     }))
     .pipe(concat('app.js'))
     .pipe(uglify())
-    .pipe(gulp.dest('js/dist/'));
+    .pipe(gulp.dest('js/dist/'))
+    .pipe(browserSync.stream());
 });
 
 // npm install --save-dev gulp-stylus
@@ -26,27 +28,40 @@ gulp.task('css', function () {
     .pipe(stylus({
       compress: true
     }))
-    .pipe(gulp.dest('./css/dist/'));
+    .pipe(gulp.dest('./css/dist/'))
+    .pipe(browserSync.stream());
 });
 
 // npm install --save-dev gulp-pug
 gulp.task('html', function () {
   gulp.src('./html/src/*.pug')
     .pipe(pug({
-
+      pretty: true
     }))
-    .pipe(gulp.dest('html/dist'));
+    .pipe(gulp.dest('./'))
+    .pipe(browserSync.stream());
 });
 
-gulp.task('watch', function() {
+// npm install --save-dev gulp-inject
+gulp.task('inject', function () {
+  let target = gulp.src('./index.html');
+  let sources = gulp.src(['./js/dist/*.js', './css/dist/*.css'], {read: false});
+  return target.pipe(inject(sources))
+    .pipe(gulp.dest('./'))
+    .pipe(browserSync.stream());
+});
+
+// npm install browser-sync gulp --save-dev
+gulp.task('server', function() {
 
   browserSync.init({
-    server: './html/dist/'
+    server: './'
   });
 
-  gulp.watch('./js/src/*.js', ['js']).on('change', browserSync.reload);
-  gulp.watch('./css/src/*.styl', ['css']).on('change', browserSync.reload);
-  gulp.watch('./html/src/*.pug', ['html']).on('change', browserSync.reload);
+  gulp.watch('./html/src/*.pug', ['html']);
+  gulp.watch('./css/src/*.styl', ['css']);
+  gulp.watch('./js/src/*.js', ['js']);
+
 });
 
-gulp.task('default', ['watch']);
+gulp.task('default', ['server', 'inject']);
